@@ -3,7 +3,9 @@ import torch.nn as nn
 from layers.block import BasicConv
 from utils.init import xavier_init
 from layers.detection import Detect
-from torchvision.models import densenet121, densenet169, densenet201
+from torchvision.models import (densenet121, DenseNet121_Weights,
+                                densenet169, DenseNet169_Weights,
+                                densenet201, DenseNet201_Weights)
 
 
 class SFDetDenseNet(nn.Module):
@@ -226,11 +228,11 @@ def build_SFDetDenseNet(mode,
     in_channels = fusion_in_channels[densenet_model]
 
     if densenet_model == '121':
-        base = densenet121(pretrained=True)
+        base = densenet121(weights=DenseNet121_Weights.IMAGENET1K_V1)
     elif densenet_model == '169':
-        base = densenet169(pretrained=True)
+        base = densenet169(weights=DenseNet169_Weights.IMAGENET1K_V1)
     elif densenet_model == '201':
-        base = densenet201(pretrained=True)
+        base = densenet201(weights=DenseNet201_Weights.IMAGENET1K_V1)
 
     fusion_module = get_fusion_module(config=fusion_config[str(new_size)],
                                       in_channels=in_channels)

@@ -3,7 +3,8 @@ import torch.nn as nn
 from layers.block import BasicConv
 from utils.init import xavier_init
 from layers.detection import Detect
-from torchvision.models import resnext50_32x4d, resnext101_32x8d
+from torchvision.models import (resnext50_32x4d, ResNeXt50_32X4D_Weights,
+                                resnext101_32x8d, ResNeXt101_32X8D_Weights)
 
 
 class SFDetResNeXt(nn.Module):
@@ -222,9 +223,9 @@ def build_SFDetResNeXt(mode,
     in_channels = fusion_in_channels['default']
 
     if resnext_model == '50_32x4d':
-        base = resnext50_32x4d(pretrained=True)
+        base = resnext50_32x4d(weights=ResNeXt50_32X4D_Weights.IMAGENET1K_V1)
     elif resnext_model == '101_32x8d':
-        base = resnext101_32x8d(pretrained=True)
+        base = resnext101_32x8d(weights=ResNeXt101_32X8D_Weights.IMAGENET1K_V1)
 
     fusion_module = get_fusion_module(config=fusion_config[str(new_size)],
                                       in_channels=in_channels)

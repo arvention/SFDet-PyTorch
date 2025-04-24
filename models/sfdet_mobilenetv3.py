@@ -4,7 +4,8 @@ from layers.block import BasicConv
 from utils.init import xavier_init
 from layers.detection import Detect
 from utils.genutils import load_pretrained_model
-from torchvision.models import (mobilenet_v3_small, mobilenet_v3_large)
+from torchvision.models import (mobilenet_v3_small, MobileNet_V3_Small_Weights,
+                                mobilenet_v3_large, MobileNet_V3_Large_Weights)
 
 
 class SFDetMobileNetV3(nn.Module):
@@ -226,10 +227,12 @@ def build_SFDetMobileNetV3(mode,
     in_channels = fusion_in_channels[mobilenet_v3_model]
 
     if mobilenet_v3_model == 's':
-        base = mobilenet_v3_small(weights='IMAGENET1K_V1')
+        weights = MobileNet_V3_Small_Weights.IMAGENET1K_V1
+        base = mobilenet_v3_small(weights=weights)
         layer_indices = [3, 8, 12]
     elif mobilenet_v3_model == 'l':
-        base = mobilenet_v3_large(weights='IMAGENET1K_V2')
+        weights = MobileNet_V3_Large_Weights.IMAGENET1K_V1
+        base = mobilenet_v3_large(weights=weights)
         layer_indices = [6, 12, 16]
 
     fusion_module = get_fusion_module(config=fusion_config[str(new_size)],

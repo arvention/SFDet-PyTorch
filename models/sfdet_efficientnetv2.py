@@ -4,8 +4,9 @@ from layers.block import BasicConv
 from utils.init import xavier_init
 from layers.detection import Detect
 from utils.genutils import load_pretrained_model
-from torchvision.models import (efficientnet_v2_s, efficientnet_v2_m,
-                                efficientnet_v2_l)
+from torchvision.models import (efficientnet_v2_s, EfficientNet_V2_S_Weights,
+                                efficientnet_v2_m, EfficientNet_V2_M_Weights,
+                                efficientnet_v2_l, EfficientNet_V2_L_Weights)
 
 
 class SFDetEfficientNetV2(nn.Module):
@@ -228,11 +229,14 @@ def build_SFDetEfficientNetV2(mode,
     in_channels = fusion_in_channels[efficientnet_v2_model]
 
     if efficientnet_v2_model == 's':
-        base = efficientnet_v2_s(weights='IMAGENET1K_V1')
+        weights = EfficientNet_V2_S_Weights.IMAGENET1K_V1
+        base = efficientnet_v2_s(weights=weights)
     elif efficientnet_v2_model == 'm':
-        base = efficientnet_v2_m(weights='IMAGENET1K_V1')
+        weights = EfficientNet_V2_M_Weights.IMAGENET1K_V1
+        base = efficientnet_v2_m(weights=weights)
     elif efficientnet_v2_model == 'l':
-        base = efficientnet_v2_l(weights='IMAGENET1K_V1')
+        weights = EfficientNet_V2_L_Weights.IMAGENET1K_V1
+        base = efficientnet_v2_l(weights=weights)
 
     fusion_module = get_fusion_module(config=fusion_config[str(new_size)],
                                       in_channels=in_channels)

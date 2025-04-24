@@ -4,8 +4,11 @@ from layers.block import BasicConv
 from utils.init import xavier_init
 from layers.detection import Detect
 from utils.genutils import load_pretrained_model
-from torchvision.models import (resnet18, resnet34, resnet50,
-                                resnet101, resnet152)
+from torchvision.models import (resnet18, ResNet18_Weights,
+                                resnet34, ResNet34_Weights,
+                                resnet50, ResNet50_Weights,
+                                resnet101, ResNet101_Weights,
+                                resnet152, ResNet152_Weights)
 
 
 class SFDetResNet(nn.Module):
@@ -228,18 +231,18 @@ def build_SFDetResNet(mode,
     in_channels = fusion_in_channels['basic']
 
     if resnet_model == '18':
-        base = resnet18(pretrained=True)
+        base = resnet18(weights=ResNet18_Weights.IMAGENET1K_V1)
     elif resnet_model == '34':
-        base = resnet34(pretrained=True)
+        base = resnet34(weights=ResNet34_Weights.IMAGENET1K_V1)
     elif resnet_model == '50':
         in_channels = fusion_in_channels['bottleneck']
-        base = resnet50(pretrained=True)
+        base = resnet50(weights=ResNet50_Weights.IMAGENET1K_V1)
     elif resnet_model == '101':
         in_channels = fusion_in_channels['bottleneck']
-        base = resnet101(pretrained=True)
+        base = resnet101(weights=ResNet101_Weights.IMAGENET1K_V1)
     elif resnet_model == '152':
         in_channels = fusion_in_channels['bottleneck']
-        base = resnet152(pretrained=True)
+        base = resnet152(weights=ResNet152_Weights.IMAGENET1K_V1)
 
     fusion_module = get_fusion_module(config=fusion_config[str(new_size)],
                                       in_channels=in_channels)
