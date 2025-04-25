@@ -112,7 +112,7 @@ if __name__ == '__main__':
                         help='Mean values of the dataset')
     parser.add_argument('--anchor_config', type=str, default='SFDet-300',
                         choices=['SSD-300', 'SSD-512',
-                                 'RSSD-300', 'RSSD-512'
+                                 'RSSD-300', 'RSSD-512',
                                  'STDN-300',
                                  'SFDet-300', 'SFDet-512'],
                         help='Anchor box configuration to use')
@@ -147,7 +147,7 @@ if __name__ == '__main__':
     # architecture settings
     parser.add_argument('--model', type=str, default='SFDet-ResNet',
                         choices=['SFDet-VGG',
-                                 'SFDet-ResNet', 'SFDetV2-ResNet'
+                                 'SFDet-ResNet', 'SFDetV2-ResNet',
                                  'SFDet-DenseNet', 'SFDet-ResNeXt',
                                  'SFDet-EfficientNetV2', 'SFDet-MobileNetV3',
                                  'SSD', 'STDN', 'STDN2'],
