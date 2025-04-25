@@ -1,11 +1,9 @@
 from models.ssd import build_SSD
-from models.rssd import build_RSSD
 from models.stdn import build_STDN
 from models.stdn2 import build_STDN2
-from models.rssdv2 import build_RSSDv2
-from models.rssd_1c import build_RSSD_1C
 from models.sfdet_vgg import build_SFDetVGG
 from models.sfdet_resnet import build_SFDetResNet
+from models.sfdetv2_resnet import build_SFDetV2ResNet
 from models.sfdet_resnext import build_SFDetResNeXt
 from models.sfdet_densenet import build_SFDetDenseNet
 from models.sfdet_mobilenetv3 import build_SFDetMobileNetV3
@@ -44,6 +42,16 @@ def get_model(config,
                                   model_save_path=model_save_path,
                                   pretrained_model=pretrained_model,
                                   output_txt=output_txt)
+
+    elif config['model'] == 'SFDetV2-ResNet':
+        model = build_SFDetV2ResNet(mode=config['mode'],
+                                    new_size=config['new_size'],
+                                    resnet_model=config['resnet_model'],
+                                    anchors=anchors,
+                                    class_count=config['class_count'],
+                                    model_save_path=model_save_path,
+                                    pretrained_model=pretrained_model,
+                                    output_txt=output_txt)
 
     elif config['model'] == 'SFDet-DenseNet':
         model = build_SFDetDenseNet(mode=config['mode'],
@@ -93,24 +101,6 @@ def get_model(config,
                           new_size=config['new_size'],
                           anchors=anchors,
                           class_count=config['class_count'])
-
-    elif config['model'] == 'RSSD':
-        model = build_RSSD(mode=config['mode'],
-                           new_size=config['new_size'],
-                           anchors=anchors,
-                           class_count=config['class_count'])
-
-    elif config['model'] == 'RSSDv2':
-        model = build_RSSDv2(mode=config['mode'],
-                             new_size=config['new_size'],
-                             anchors=anchors,
-                             class_count=config['class_count'])
-
-    elif config['model'] == 'RSSD_1C':
-        model = build_RSSD_1C(mode=config['mode'],
-                              new_size=config['new_size'],
-                              anchors=anchors,
-                              class_count=config['class_count'])
 
     elif config['model'] == 'STDN':
         model = build_STDN(mode=config['mode'],

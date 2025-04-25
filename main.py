@@ -106,7 +106,7 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default='voc',
                         choices=['voc', 'coco', 'bdd', 'cityscapes'],
                         help='Dataset to use')
-    parser.add_argument('--new_size', type=int, default=300,
+    parser.add_argument('--new_size', type=int, default=320,
                         help='New height and width of input images')
     parser.add_argument('--means', type=tuple, default=(104, 117, 123),
                         help='Mean values of the dataset')
@@ -145,11 +145,12 @@ if __name__ == '__main__':
                         help='Batch size multiplier')
 
     # architecture settings
-    parser.add_argument('--model', type=str, default='SFDet-VGG',
-                        choices=['SFDet-VGG', 'SFDet-ResNet',
+    parser.add_argument('--model', type=str, default='SFDet-ResNet',
+                        choices=['SFDet-VGG',
+                                 'SFDet-ResNet', 'SFDetV2-ResNet'
                                  'SFDet-DenseNet', 'SFDet-ResNeXt',
                                  'SFDet-EfficientNetV2', 'SFDet-MobileNetV3',
-                                 'SSD', 'RSSD_1C', 'RSSD', 'STDN', 'STDN2'],
+                                 'SSD', 'STDN', 'STDN2'],
                         help='Model to use')
     parser.add_argument('--basenet', type=str, default='vgg16_reducedfc.pth',
                         help='Base network for VGG')
