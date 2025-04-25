@@ -254,6 +254,7 @@ if __name__ == '__main__':
     if args['mode'] == 'train':
         version = str(datetime.now()).replace(':', '_')
         version = '{}_train'.format(version)
+        version = version.replace(' ', '_')
         path = args['model_save_path']
         path = osp.join(path, version)
         output_txt = osp.join(path, '{}.txt'.format(version))
