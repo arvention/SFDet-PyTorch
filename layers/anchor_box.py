@@ -1,5 +1,5 @@
 import torch
-from math import sqrt
+from math import sqrt, ceil
 
 
 anchors_config = {
@@ -9,12 +9,6 @@ anchors_config = {
     'SSD-512': [[8, 16, 32, 64, 128, 256, 512],
                 [64, 32, 16, 8, 4, 2, 1],
                 [[2], [2, 3], [2, 3], [2, 3], [2, 3], [2], [2]]],
-    'RSSD-300': [[8, 16, 32, 64, 100, 300],
-                 [38, 19, 10, 5, 3, 1],
-                 [[2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3]]],
-    'RSSD-512': [[8, 16, 32, 64, 128, 256, 512],
-                 [64, 32, 16, 8, 4, 2, 1],
-                 [[2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3]]],
     'STDN-300': [[8, 16, 32, 64, 100, 300],  # change this
                  [36, 18, 9, 5, 3, 1],
                  [[1.6, 2, 3], [1.6, 2, 3], [1.6, 2, 3], [1.6, 2, 3],
@@ -26,6 +20,25 @@ anchors_config = {
                   [64, 32, 16, 8, 4, 2, 1],
                   [[2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2], [2]]]
 }
+
+
+def get_steps(input_size,
+              map_sizes):
+    steps = []
+
+    for map_size in map_sizes:
+        steps += [input_size / map_size]
+
+    return steps
+
+
+def get_map_sizes(input_size):
+    map_sizes = []
+    while input_size > 1:
+        map_sizes += [input_size]
+        input_size = ceil(input_size / 2)
+    map_sizes += [1]
+    return map_sizes
 
 
 class AnchorBox(object):
@@ -50,9 +63,11 @@ class AnchorBox(object):
         super(AnchorBox, self).__init__()
 
         self.new_size = new_size
-        self.steps = anchors_config[config][0]
-        self.map_sizes = anchors_config[config][1]
-        self.aspect_ratios = anchors_config[config][2]
+        self.map_sizes = get_map_sizes(new_size // 8)
+        self.steps = get_steps(new_size,
+                               self.map_sizes)
+        self.aspect_ratios = [[2, 3] for i in range(len(self.map_sizes) - 2)]
+        self.aspect_ratios += [[2], [2]]
 
         self.scales = self.get_scales(scale_initial=scale_initial,
                                       scale_min=scale_min,
