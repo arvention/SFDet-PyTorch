@@ -145,8 +145,8 @@ if __name__ == '__main__':
                         help='Batch size multiplier')
 
     # architecture settings
-    parser.add_argument('--model', type=str, default='SFDet-ResNet',
-                        choices=['SFDet-VGG',
+    parser.add_argument('--model', type=str, default='SFDetV2-ResNet',
+                        choices=['SFDet-VGG', 'SFDetV2-VGG'
                                  'SFDet-ResNet', 'SFDetV2-ResNet',
                                  'SFDet-DenseNet',
                                  'SFDet-ResNeXt', 'SFDetV2-ResNeXt',
