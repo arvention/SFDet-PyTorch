@@ -255,7 +255,7 @@ def build_SFDetV2EfficientNetV2(mode,
                               model_save_path=model_save_path,
                               pretrained_model=pretrained_model,
                               output_txt=output_txt)
-        head = multibox(config=mbox_config[str(new_size)],
+        head = multibox(input_size=new_size // 8,
                         class_count=class_count)
         model.class_head = nn.ModuleList(modules=head[0])
         model.loc_head = nn.ModuleList(modules=head[1])
