@@ -73,7 +73,6 @@ class SFDetV2ResNet(nn.Module):
         feature_pyramid = []
         for layer in self.pyramid_module:
             x = layer(x)
-            print(x.shape)
             feature_pyramid.append(x)
 
         # apply multibox head to sources
@@ -153,7 +152,6 @@ def get_pyramid_module(input_size):
     out_channels = 512
 
     while input_size > 1:
-        print('pyramid', input_size)
 
         if input_size == 3:
             input_size //= 2
@@ -188,7 +186,6 @@ def multibox(input_size,
     in_channels = 512
 
     while input_size > 0:
-        print('multibox', input_size)
 
         if i == 2:
             in_channels = 256
