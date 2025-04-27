@@ -36,7 +36,10 @@ def get_map_sizes(input_size):
     map_sizes = []
     while input_size > 1:
         map_sizes += [input_size]
-        input_size = ceil(input_size / 2)
+        if input_size == 3:
+            input_size //= 2
+        else:
+            input_size = ceil(input_size / 2)
     map_sizes += [1]
     return map_sizes
 

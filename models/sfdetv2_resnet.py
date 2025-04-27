@@ -73,6 +73,7 @@ class SFDetV2ResNet(nn.Module):
         feature_pyramid = []
         for layer in self.pyramid_module:
             x = layer(x)
+            print(x.shape)
             feature_pyramid.append(x)
 
         # apply multibox head to sources
@@ -151,17 +152,27 @@ def get_pyramid_module(input_size):
     in_channels = 512
     out_channels = 512
 
-    while input_size > 0:
+    while input_size > 1:
+        print('pyramid', input_size)
 
-        layers += [BasicConv(in_channels=in_channels,
-                             out_channels=out_channels,
-                             kernel_size=3,
-                             stride=2,
-                             padding=1)]
+        if input_size == 3:
+            input_size //= 2
+            layers += [BasicConv(in_channels=in_channels,
+                                 out_channels=out_channels,
+                                 kernel_size=3,
+                                 stride=2,
+                                 padding=0)]
+
+        else:
+            input_size = ceil(input_size / 2)
+            layers += [BasicConv(in_channels=in_channels,
+                                 out_channels=out_channels,
+                                 kernel_size=3,
+                                 stride=2,
+                                 padding=1)]
 
         in_channels = out_channels
         out_channels = 256
-        input_size //= 2
 
     return layers
 
@@ -176,12 +187,13 @@ def multibox(input_size,
     num_anchors = 6
     in_channels = 512
 
-    while input_size > 1:
+    while input_size > 0:
+        print('multibox', input_size)
 
         if i == 2:
             in_channels = 256
 
-        if input_size < 3:
+        if input_size <= 3:
             num_anchors = 4
 
         class_layers += [nn.Conv2d(in_channels=in_channels,
@@ -193,17 +205,20 @@ def multibox(input_size,
                                  kernel_size=3,
                                  padding=1)]
 
-        input_size = ceil(input_size / 2)
+        if input_size <= 3:
+            input_size //= 2
+        else:
+            input_size = ceil(input_size / 2)
         i += 1
 
-    class_layers += [nn.Conv2d(in_channels=in_channels,
-                               out_channels=num_anchors * class_count,
-                               kernel_size=3,
-                               padding=1)]
-    loc_layers += [nn.Conv2d(in_channels=in_channels,
-                             out_channels=num_anchors * 4,
-                             kernel_size=3,
-                             padding=1)]
+    # class_layers += [nn.Conv2d(in_channels=in_channels,
+    #                            out_channels=num_anchors * class_count,
+    #                            kernel_size=3,
+    #                            padding=1)]
+    # loc_layers += [nn.Conv2d(in_channels=in_channels,
+    #                          out_channels=num_anchors * 4,
+    #                          kernel_size=3,
+    #                          padding=1)]
 
     return class_layers, loc_layers
 
