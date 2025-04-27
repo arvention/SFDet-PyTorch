@@ -3,6 +3,7 @@ import torch.nn as nn
 from layers.block import BasicConv
 from utils.init import xavier_init
 from layers.detection import Detect
+from utils.genutils import load_pretrained_model
 from torchvision.models import (resnext50_32x4d, ResNeXt50_32X4D_Weights,
                                 resnext101_32x8d, ResNeXt101_32X8D_Weights)
 
@@ -218,7 +219,10 @@ def build_SFDetResNeXt(mode,
                        new_size,
                        resnext_model,
                        anchors,
-                       class_count):
+                       class_count,
+                       model_save_path,
+                       pretrained_model,
+                       output_txt):
 
     in_channels = fusion_in_channels['default']
 
@@ -232,13 +236,34 @@ def build_SFDetResNeXt(mode,
 
     pyramid_module = get_pyramid_module(config=pyramid_config[str(new_size)])
 
-    head = multibox(config=mbox_config[str(new_size)],
-                    class_count=class_count)
-
-    return SFDetResNeXt(mode=mode,
-                        base=base,
-                        fusion_module=fusion_module,
-                        pyramid_module=pyramid_module,
-                        head=head,
-                        anchors=anchors,
+    if pretrained_model is not None:
+        head = multibox(config=mbox_config[str(new_size)],
+                        class_count=81)
+        model = SFDetResNeXt(mode=mode,
+                             base=base,
+                             fusion_module=fusion_module,
+                             pyramid_module=pyramid_module,
+                             head=head,
+                             anchors=anchors,
+                             class_count=class_count)
+        load_pretrained_model(model=model,
+                              model_save_path=model_save_path,
+                              pretrained_model=pretrained_model,
+                              output_txt=output_txt)
+        head = multibox(config=mbox_config[str(new_size)],
                         class_count=class_count)
+        model.class_head = nn.ModuleList(modules=head[0])
+        model.loc_head = nn.ModuleList(modules=head[1])
+
+    else:
+        head = multibox(config=mbox_config[str(new_size)],
+                        class_count=class_count)
+        model = SFDetResNeXt(mode=mode,
+                             base=base,
+                             fusion_module=fusion_module,
+                             pyramid_module=pyramid_module,
+                             head=head,
+                             anchors=anchors,
+                             class_count=class_count)
+
+    return model
