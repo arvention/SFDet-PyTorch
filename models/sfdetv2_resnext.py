@@ -216,17 +216,6 @@ fusion_in_channels = {
 }
 
 
-fusion_config = {
-    '300': [[512, 3, 1, 0],
-            [512, 2, 1, 0],
-            [512, 2, 1, 0]],
-
-    '512': [[512, 3, 1, 1],
-            [512, 3, 1, 1],
-            [512, 3, 1, 1]]
-}
-
-
 def build_SFDetV2ResNeXt(mode,
                          new_size,
                          resnext_model,
