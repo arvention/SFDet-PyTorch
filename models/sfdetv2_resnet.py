@@ -208,15 +208,6 @@ def multibox(input_size,
             input_size = ceil(input_size / 2)
         i += 1
 
-    # class_layers += [nn.Conv2d(in_channels=in_channels,
-    #                            out_channels=num_anchors * class_count,
-    #                            kernel_size=3,
-    #                            padding=1)]
-    # loc_layers += [nn.Conv2d(in_channels=in_channels,
-    #                          out_channels=num_anchors * 4,
-    #                          kernel_size=3,
-    #                          padding=1)]
-
     return class_layers, loc_layers
 
 
