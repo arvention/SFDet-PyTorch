@@ -3,11 +3,13 @@ from models.stdn import build_STDN
 from models.stdn2 import build_STDN2
 from models.sfdet_vgg import build_SFDetVGG
 from models.sfdet_resnet import build_SFDetResNet
-from models.sfdetv2_resnet import build_SFDetV2ResNet
 from models.sfdet_resnext import build_SFDetResNeXt
 from models.sfdet_densenet import build_SFDetDenseNet
+from models.sfdetv2_resnet import build_SFDetV2ResNet
+from models.sfdetv2_resnext import build_SFDetV2ResNeXt
 from models.sfdet_mobilenetv3 import build_SFDetMobileNetV3
 from models.sfdet_efficientnetv2 import build_SFDetEfficientNetV2
+from models.sfdetv2_efficientnetv2 import build_SFDetV2EfficientNetV2
 # from torchvision.models.detection import ssd300_vgg16
 # from torchvision.models.detection.ssd import SSDHead
 # from torchvision.models.detection._utils import retrieve_out_channels
@@ -65,7 +67,20 @@ def get_model(config,
                                    new_size=config['new_size'],
                                    resnext_model=config['resnext_model'],
                                    anchors=anchors,
-                                   class_count=config['class_count'])
+                                   class_count=config['class_count'],
+                                   model_save_path=model_save_path,
+                                   pretrained_model=pretrained_model,
+                                   output_txt=output_txt)
+
+    elif config['model'] == 'SFDetV2-ResNeXt':
+        model = build_SFDetV2ResNeXt(mode=config['mode'],
+                                     new_size=config['new_size'],
+                                     resnext_model=config['resnext_model'],
+                                     anchors=anchors,
+                                     class_count=config['class_count'],
+                                     model_save_path=model_save_path,
+                                     pretrained_model=pretrained_model,
+                                     output_txt=output_txt)
 
     elif config['model'] == 'SFDet-EfficientNetV2':
         base_model = config['efficientnet_v2_model']
@@ -77,6 +92,17 @@ def get_model(config,
                                           model_save_path=model_save_path,
                                           pretrained_model=pretrained_model,
                                           output_txt=output_txt)
+
+    elif config['model'] == 'SFDetV2-EfficientNetV2':
+        base_model = config['efficientnet_v2_model']
+        model = build_SFDetV2EfficientNetV2(mode=config['mode'],
+                                            new_size=config['new_size'],
+                                            efficientnet_v2_model=base_model,
+                                            anchors=anchors,
+                                            class_count=config['class_count'],
+                                            model_save_path=model_save_path,
+                                            pretrained_model=pretrained_model,
+                                            output_txt=output_txt)
 
     elif config['model'] == 'SFDet-MobileNetV3':
         base_model = config['mobilenet_v3_model']
