@@ -2,6 +2,7 @@ from models.ssd import build_SSD
 from models.stdn import build_STDN
 from models.stdn2 import build_STDN2
 from models.sfdet_vgg import build_SFDetVGG
+from models.sfdetv2_vgg import build_SFDetV2VGG
 from models.sfdet_resnet import build_SFDetResNet
 from models.sfdet_resnext import build_SFDetResNeXt
 from models.sfdet_densenet import build_SFDetDenseNet
@@ -34,6 +35,15 @@ def get_model(config,
                                model_save_path=model_save_path,
                                pretrained_model=pretrained_model,
                                output_txt=output_txt)
+
+    elif config['model'] == 'SFDetV2-VGG':
+        model = build_SFDetV2VGG(mode=config['mode'],
+                                 new_size=config['new_size'],
+                                 anchors=anchors,
+                                 class_count=config['class_count'],
+                                 model_save_path=model_save_path,
+                                 pretrained_model=pretrained_model,
+                                 output_txt=output_txt)
 
     elif config['model'] == 'SFDet-ResNet':
         model = build_SFDetResNet(mode=config['mode'],
