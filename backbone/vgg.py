@@ -1,28 +1,10 @@
 import torch.nn as nn
 
 
-base_config = {
-
-    '300': [64, 64, 'M',
-            128, 128, 'M',
-            256, 256, 256, 'C',
-            512, 512, 512, 'M',
-            512, 512, 512],
-
-    '512': [64, 64, 'M',
-            128, 128, 'M',
-            256, 256, 256, 'C',
-            512, 512, 512, 'M',
-            512, 512, 512]
-
-}
-
-
 class VGG(object):
     """VGG classification architecture"""
 
     def __init__(self,
-                 config,
                  in_channels,
                  batch_norm=False):
         """Class constructor for VGG
@@ -39,7 +21,11 @@ class VGG(object):
         """
 
         super(VGG, self).__init__()
-        self.config = config
+        self.config = [64, 64, 'M',
+                       128, 128, 'M',
+                       256, 256, 256, 'C',
+                       512, 512, 512, 'M',
+                       512, 512, 512]
         self.in_channels = in_channels
         self.batch_norm = batch_norm
         self.layers = self.get_layers()
