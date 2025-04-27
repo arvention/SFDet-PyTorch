@@ -2,11 +2,11 @@ import os
 import torch
 import os.path as osp
 import torch.nn as nn
+from backbone.vgg import VGG
 import torch.nn.functional as F
 from layers.l2_norm import L2Norm
 from utils.init import xavier_init
 from layers.detection import Detect
-from backbone.vgg import VGG, base_config
 
 
 class SSD(nn.Module):
@@ -180,8 +180,7 @@ def build_SSD(mode,
               anchors,
               class_count):
 
-    base = VGG(config=base_config[str(new_size)],
-               in_channels=3)
+    base = VGG(in_channels=3)
 
     extras = get_extras(config=extras_config[str(new_size)],
                         in_channels=1024)

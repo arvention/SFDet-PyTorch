@@ -2,10 +2,10 @@ import os
 import torch
 import torch.nn as nn
 import os.path as osp
+from backbone.vgg import VGG
 from layers.block import BasicConv
 from utils.init import xavier_init
 from layers.detection import Detect
-from backbone.vgg import VGG, base_config
 from utils.genutils import load_pretrained_model
 
 
@@ -277,8 +277,7 @@ def build_SFDetVGG(mode,
                    pretrained_model,
                    output_txt):
 
-    base = VGG(config=base_config[str(new_size)],
-               in_channels=3)
+    base = VGG(in_channels=3)
 
     extras = get_extras(in_channels=1024)
 
